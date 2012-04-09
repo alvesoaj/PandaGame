@@ -16,6 +16,8 @@ class Application(ShowBase):
         self.terrain.setColorMap("../textures/grass.png")
         # Configurando a escala de variação do eixo Z na construção do terreno
         self.terrain.getRoot().setSz(50)
+        # configurando o número de blocos que o terreno irá subdividir-se na renderização
+        self.terrain.setBlockSize(4)
         # adicionando o objeto terrain a raiz da cena gráfica
         self.terrain.getRoot().reparentTo(render)
         # efetivamente gerando matemática e geometricamente o terreno
