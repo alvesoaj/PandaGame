@@ -4,7 +4,11 @@
 '''
 from direct.showbase.ShowBase import ShowBase
 from direct.actor.Actor import Actor
-# from panda3d.core import Vec3
+from panda3d.core import Vec3
+from pandac.PandaModules import loadPrcFileData
+
+loadPrcFileData("", "want-directtools #t")
+loadPrcFileData("", "want-tk #t")
 
 class Application(ShowBase):
     def __init__(self):
