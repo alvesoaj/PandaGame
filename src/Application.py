@@ -7,6 +7,7 @@ from direct.actor.Actor import Actor
 from panda3d.core import Vec3
 from pandac.PandaModules import loadPrcFileData
 
+# habilitando a aba de ferramentas
 loadPrcFileData("", "want-directtools #t")
 loadPrcFileData("", "want-tk #t")
 
