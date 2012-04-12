@@ -51,7 +51,7 @@ class Application(ShowBase):
         
         # carregando um modelo chamado moon
         self.moon = loader.loadModel("box")
-        # criando uma nova cena gráfica chanada moonCenter
+        # criando uma nova cena gráfica chamada moonCenter
         self.moonCenter = self.earthCenter.attachNewNode("moonCenter")
         # relacionando o modelo moon a cena gráfica moonCenter
         self.moon.reparentTo(self.moonCenter)
@@ -62,3 +62,17 @@ class Application(ShowBase):
         
         # posicionando espacialmente a camera padrão
         self.cam.setPos(0, -100, 0)
+        # adiciononando uma tarefa a aplicação
+        self.taskMgr.add(self.update, "update")
+        
+    def update(self, task):
+        # rotacionando o modelo sun no eixo x em dez unidades vezes o tempo total des de que a tarefa foi iniciada
+        self.sun.setP(task.time * 10)
+        # rotacionando o modelo earth no eixo z em menos cem unidades vezes o tempo total da tarefa
+        self.earth.setH(task.time * -100)
+        # rotacionado a cena gráfica earthCenter no eixo z em cinquenta unidades vezes o tempo total da tarefa
+        self.earthCenter.setH(task.time * 50)
+        # rotacionando a cena gráfica moonCenter no eixo y  em cento e cinquenta unidadess vezes o tempo toral da tarefa
+        self.moonCenter.setR(task.time * 150)
+        # retornando a tarefa para garantir continuidade
+        return task.cont
