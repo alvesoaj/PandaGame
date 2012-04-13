@@ -11,8 +11,8 @@ texcoords = [Vec2(1, 1), Vec2(0, 1), Vec2(0, 0), Vec2(1, 0)]
 class Application(ShowBase):
     def __init__(self):
         ShowBase.__init__(self)
-        format = GeomVertexFormat.getV3t2()
-        geomData = GeomVertexData("box", format, Geom.UHStatic)
+        gvformat = GeomVertexFormat.getV3t2()
+        geomData = GeomVertexData("box", gvformat, Geom.UHStatic)
         vertexWriter = GeomVertexWriter(geomData, "vertex")
         uvWriter = GeomVertexWriter(geomData, "texcoord")
         for pos, tex in zip(vertices, texcoords):
