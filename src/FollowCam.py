@@ -1,13 +1,19 @@
-from direct.showbase.ShowBase import ShowBase
+# -*- coding: UTF-8 -*-
+'''
+    @author: zerokol
+'''
+# from direct.showbase.ShowBase import ShowBase
 from panda3d.core import Vec3
 
 class FollowCam():
     def __init__(self, camera, target):
-        self.dummy = render.attachNewNode("cam" + target.getName())
+        self.dummy = render.attachNewNode("cam" + target.
+        getName())
         self.turnRate = 2.2
         self.camera = camera
         self.target = target
-        taskMgr.add(self.updateCamera, "updateCamera" + target.getName())
+        taskMgr.add(self.updateCamera, "updateCamera" + target.
+        getName())
         
     def updateCamera(self, task):
         self.dummy.setPos(self.target.getPos())

@@ -1,7 +1,6 @@
+# -*- coding: UTF-8 -*-
 '''
-Created on Nov 17, 2011
-
-@author: zerokol
+    @author: zerokol
 '''
 from Application import Application
 
