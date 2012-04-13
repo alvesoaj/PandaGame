@@ -7,16 +7,21 @@ from panda3d.core import Vec3
 
 class FollowCam():
     def __init__(self, camera, target):
-        self.dummy = render.attachNewNode("cam" + target.
-        getName())
+        # criando uma nova cena gráfica que servira de manequin ao ator alvo, para eveitar conflitos
+        self.dummy = render.attachNewNode("cam"+target.getName())
+        # taxa de curva
         self.turnRate = 2.2
+        # camera
         self.camera = camera
+        # alvo
         self.target = target
-        taskMgr.add(self.updateCamera, "updateCamera" + target.
-        getName())
+        # criando uma tarefa que atualizará a camera
+        taskMgr.add(self.updateCamera, "updateCamera"+target.getName())
         
     def updateCamera(self, task):
+        # posicionando espacialmente o manequim de acordo com a posicão do alvo
         self.dummy.setPos(self.target.getPos())
+        
         heading = self.clampAngle(self.dummy.getH())
         turnDiff = self.target.getH() - heading
         turnDiff = self.clampAngle(turnDiff)
