@@ -3,26 +3,51 @@
     @author: zerokol
 '''
 from direct.showbase.ShowBase import ShowBase
-from direct.actor.Actor import Actor
-from panda3d.core import Vec3
+from panda3d.core import *
+import random
 
 class Application(ShowBase):
     def __init__(self):
         ShowBase.__init__(self)
-        # posicionando espacialmente a camera principal
-        self.cam.setPos(0, -30, 6)
-        taskMgr.doMethodLater(3, self.load, "load", extraArgs = ["teapot", Vec3(-5, 0, 0), self.modelLoaded])
-        taskMgr.doMethodLater(5, self.load, "load", extraArgs = ["panda", Vec3(5, 0, 0), self.actorLoaded])
+        self.cam.setPos(0, -50, 10)
+        self.setupCD()
+        self.addSmiley()
+        self.addFloor()
+        taskMgr.add(self.updateSmiley, "UpdateSmiley")
+
+    def setupCD(self):
+        base.cTrav = CollisionTraverser()
+        base.cTrav.showCollisions(render)
+        self.notifier = CollisionHandlerEvent()
+        self.notifier.addInPattern("%fn-in-%in")
+        self.accept("frowney-in-floor", self.onCollision)
+
+    def addSmiley(self):
+        self.frowney = loader.loadModel("frowney")
+        self.frowney.reparentTo(render)
+        self.frowney.setPos(0, 0, 10)
+        self.frowney.setPythonTag("velocity", 0)
+        col = self.frowney.attachNewNode(CollisionNode("frowney"))
+        col.node().addSolid(CollisionSphere(0, 0, 0, 1.1))
+        col.show()
+        base.cTrav.addCollider(col, self.notifier)
         
-    def load(self, name, pos, cb):
-        loader.loadModel(name, callback = cb, extraArgs = [pos])
+    def addFloor(self):
+        floor = render.attachNewNode(CollisionNode("floor"))
+        floor.node().addSolid(CollisionPlane(Plane(Vec3(0, 0, 1),
+        Point3(0, 0, 0))))
+        floor.show()
         
-    def modelLoaded(self, model, pos):
-        model.reparentTo(render)
-        model.setPos(pos)
+    def onCollision(self, entry):
+        vel = random.uniform(0.01, 0.2)
+        self.frowney.setPythonTag("velocity", vel)
         
-    def actorLoaded(self, model, pos):
-        self.panda = Actor(model, {"walk": "panda-walk"})
-        self.panda.reparentTo(render)
-        self.panda.setPos(pos)
-        self.panda.loop("walk")
+    def updateSmiley(self, task):
+        vel = self.frowney.getPythonTag("velocity")
+        z = self.frowney.getZ()
+        self.frowney.setZ(z + vel)
+        vel -= 0.001
+        self.frowney.setPythonTag("velocity", vel)
+        return task.cont
+
+
