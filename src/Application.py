@@ -34,8 +34,7 @@ class Application(ShowBase):
         
     def addFloor(self):
         floor = render.attachNewNode(CollisionNode("floor"))
-        floor.node().addSolid(CollisionPlane(Plane(Vec3(0, 0, 1),
-        Point3(0, 0, 0))))
+        floor.node().addSolid(CollisionPlane(Plane(Vec3(0, 0, 1), Point3(0, 0, 0))))
         floor.show()
         
     def onCollision(self, entry):
